@@ -1,0 +1,814 @@
+/* 
+ * Premium Aesthetic Design System 
+ * Dark mode, Glassmorphism, Neon highlights 
+ */
+
+ :root {
+    /* Color Palette - Deep Dark Tech */
+    --bg-base: #0a0a0f;
+    --bg-surface: rgba(20, 20, 30, 0.6);
+    --bg-surface-hover: rgba(30, 30, 45, 0.8);
+    
+    --primary-color: #00f0ff; /* Cyberpunk cyan */
+    --primary-glow: rgba(0, 240, 255, 0.5);
+    
+    --secondary-color: #7b2cbf; /* Deep purple */
+    --danger-color: #ff2a2a;
+    --danger-glow: rgba(255, 42, 42, 0.5);
+    --success-color: #00ff66;
+    
+    /* Device Colors */
+    --led-red-off: #4a1010;
+    --led-red-on: #ff1010;
+    --led-green-off: #104a10;
+    --led-green-on: #10ff10;
+    --led-blue-off: #10104a;
+    --led-blue-on: #1010ff;
+    
+    --text-primary: #f0f0f5;
+    --text-secondary: #8a8a9e;
+    
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-highlight: rgba(0, 240, 255, 0.3);
+    
+    /* Typography */
+    --font-ui: 'Inter', system-ui, sans-serif;
+    --font-code: 'Fira Code', monospace;
+    
+    /* Effects */
+    --glass-blur: 12px;
+    --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    --transition-fast: 0.2s ease;
+    --transition-bounce: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    height: 100vh;
+    overflow: hidden;
+    /* subtle background pattern or gradient */
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(123, 44, 191, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.05) 0%, transparent 40%);
+}
+
+.glass-panel {
+    background: var(--bg-surface);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+}
+
+/* Layout */
+.app-container {
+    display: flex;
+    height: 100vh;
+    padding: 16px;
+    gap: 16px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.logo i {
+    font-size: 24px;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-glow);
+}
+
+.logo h2 {
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.badge {
+    background: rgba(0, 240, 255, 0.15);
+    color: var(--primary-color);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    border: 1px solid var(--border-highlight);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-links li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: var(--transition-fast);
+    font-weight: 500;
+}
+
+.nav-links li.active a, .nav-links li a:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--primary-color);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+}
+
+/* Toolbar */
+.toolbar {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+}
+
+.toolbar-right {
+    display: flex;
+    gap: 12px;
+}
+
+.toolbar h1 {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.toolbar h1 span {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition-bounce);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: #000;
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.btn-primary:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px var(--primary-glow);
+}
+
+.btn-danger {
+    background: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+}
+
+.btn-danger:not(:disabled):hover {
+    background: rgba(255, 42, 42, 0.1);
+    box-shadow: 0 0 15px var(--danger-glow);
+}
+
+/* Workspace Grid */
+.workspace {
+    display: flex;
+    flex: 1;
+    gap: 16px;
+    min-height: 0;
+}
+
+.editor-section, .dashboard-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.section-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-header h3 {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+}
+
+/* Code Editor with Syntax Highlighting */
+.editor-wrapper {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #1e1e1e; /* Match Prism Tomorrow theme */
+}
+
+#code-editor, #highlighting {
+    /* Both must have the same font and padding to overlap correctly */
+    margin: 0;
+    padding: 20px;
+    border: 0;
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-code);
+    font-size: 14px;
+    line-height: 1.6;
+    tab-size: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#code-editor {
+    background: transparent;
+    color: transparent; /* Text is invisible, we see the highlighter behind it */
+    caret-color: var(--primary-color);
+    resize: none;
+    outline: none;
+    z-index: 1;
+}
+
+#highlighting {
+    z-index: 0;
+    background: transparent;
+    pointer-events: none;
+    overflow-y: auto;
+}
+
+#highlighting code {
+    background: transparent !important;
+    padding: 0 !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+}
+
+/* Prism Overrides for consistency */
+.prism-tomorrow pre[class*="language-"] {
+    background: transparent !important;
+    margin: 0;
+}
+
+#code-editor:focus {
+    /* Subtle inner glow indicating focus */
+    box-shadow: inset 0 0 100px rgba(0, 240, 255, 0.02);
+}
+
+/* Terminal / Serial monitor */
+.terminal-section {
+    height: 200px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.serial-output {
+    flex: 1;
+    padding: 12px 20px;
+    font-family: var(--font-code);
+    font-size: 12px;
+    color: var(--success-color);
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.serial-output div {
+    margin-bottom: 4px;
+}
+
+/* Status Indicator */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.dot.offline {
+    background: var(--text-secondary);
+}
+
+.dot.online {
+    background: var(--success-color);
+    box-shadow: 0 0 8px var(--success-color);
+}
+
+/* Dashboard Grid */
+.dashboard-section {
+    flex: 1;
+}
+
+.hardware-grid {
+    padding: 24px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    overflow-y: auto;
+}
+
+.hardware-module {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: var(--transition-fast);
+}
+
+.hardware-module:hover {
+    border-color: var(--border-highlight);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.hardware-module h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 8px;
+}
+
+/* LEDs */
+.led-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.led-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.led {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--led-red-off);
+    border: 2px solid rgba(0,0,0,0.5);
+    box-shadow: inset -2px -2px 6px rgba(0,0,0,0.5), inset 2px 2px 6px rgba(255,255,255,0.2);
+    transition: all 0.1s;
+}
+
+.led.on {
+    background: var(--led-red-on);
+    box-shadow: 0 0 15px var(--led-red-on), inset 2px 2px 6px rgba(255,255,255,0.5);
+}
+
+.pin-label {
+    font-family: var(--font-code);
+    font-size: 10px;
+    color: var(--text-secondary);
+    background: rgba(255,255,255,0.05);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Hardware Buttons */
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.btn-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.hw-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #333, #111);
+    border: 2px solid #000;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.2), 0 4px 6px rgba(0,0,0,0.5);
+    transition: all 0.1s;
+}
+
+.hw-btn:active, .hw-btn.pressed {
+    transform: scale(0.95) translateY(2px);
+    box-shadow: inset 0 4px 8px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.5);
+    background: linear-gradient(135deg, #111, #000);
+}
+
+/* RGB LED */
+.rgb-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 10px 0;
+}
+
+.rgb-led {
+    width: 40px;
+    height: 40px;
+    background: #222; /* off state */
+    /* dynamic color injected by JS */
+}
+
+.rgb-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-family: var(--font-code);
+    font-size: 10px;
+}
+.rgb-labels span {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.05);
+}
+
+/* Buzzer */
+.buzzer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    gap: 12px;
+}
+
+.buzzer-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #111;
+    border: 3px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #555;
+    transition: var(--transition-fast);
+}
+
+.buzzer-icon.active {
+    color: var(--primary-color);
+    animation: vibrate 0.1s infinite;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    border-color: var(--primary-color);
+}
+
+@keyframes vibrate {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+/* LCD Display 16x2 */
+.lcd-module {
+    grid-column: span 2;
+}
+
+.lcd-container {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lcd-screen {
+    background: #2b4510; /* LCD Greenish/Yellowish look */
+    border: 10px solid #1a1a1a;
+    border-radius: 4px;
+    padding: 16px;
+    font-family: 'Fira Code', monospace;
+    color: rgba(0, 40, 0, 0.9);
+    font-weight: 700;
+    font-size: 18px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.3);
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    white-space: pre;
+    letter-spacing: 2px;
+}
+
+.lcd-screen div {
+    height: 1.5em;
+    line-height: 1.5em;
+}
+
+/* Backlight variations could be added later */
+
+/* 7-Segment Display */
+.segment-module {
+    grid-column: span 2;
+}
+
+.segment-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    background: #000;
+    border-radius: 8px;
+    border: 2px solid #222;
+}
+
+.digit {
+    position: relative;
+    width: 50px;
+    height: 90px;
+}
+
+.seg {
+    position: absolute;
+    background: #1a0000; /* Off color - very dark red */
+    border-radius: 3px;
+    transition: background 0.05s, box-shadow 0.05s;
+    opacity: 0.8;
+}
+
+.seg.on {
+    background: #ff3333; /* Brighter red */
+    opacity: 1;
+    box-shadow: 0 0 12px #ff0000, 0 0 20px rgba(255, 0, 0, 0.6);
+    z-index: 2;
+}
+
+/* Horizontal segments */
+.seg-a, .seg-g, .seg-d {
+    width: 34px;
+    height: 6px;
+    left: 8px;
+}
+.seg-a { top: 0; }
+.seg-g { top: 42px; }
+.seg-d { bottom: 0; }
+
+/* Vertical segments */
+.seg-f, .seg-b, .seg-e, .seg-c {
+    width: 6px;
+    height: 34px;
+}
+.seg-f { left: 0; top: 6px; }
+.seg-b { right: 0; top: 6px; }
+.seg-e { left: 0; bottom: 6px; }
+.seg-c { right: 0; bottom: 6px; }
+
+.seg-dp {
+    width: 6px;
+    height: 6px;
+    bottom: 0;
+    right: -10px;
+    border-radius: 50%;
+}
+
+/* Sensors panel */
+.sensors-module {
+    grid-column: span 2;
+}
+
+.sensor-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sensor-control {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.sensor-control label {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.sensor-control input[type="range"] {
+    flex: 2;
+    accent-color: var(--primary-color);
+    background: rgba(255,255,255,0.05);
+}
+
+.sensor-control span {
+    width: 60px;
+    text-align: right;
+    font-family: var(--font-code);
+    font-size: 12px;
+    color: var(--primary-color);
+}
+
+/* Relay */
+.relay-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.relay-box {
+    width: 60px;
+    height: 40px;
+    background: #1a1a1a;
+    border: 2px solid #333;
+    border-radius: 4px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.relay-box.on {
+    border-color: var(--success-color);
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.3);
+}
+
+.relay-switch {
+    width: 30px;
+    height: 4px;
+    background: #444;
+    transform: rotate(-15deg);
+    transition: transform 0.1s;
+}
+
+.relay-box.on .relay-switch {
+    transform: rotate(15deg);
+    background: var(--success-color);
+}
+
+.relay-label {
+    position: absolute;
+    font-size: 8px;
+    bottom: 2px;
+    color: #444;
+}
+
+/* DC Motor */
+.motor-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.motor-axle {
+    width: 60px;
+    height: 60px;
+    background: #222;
+    border: 4px solid #333;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.motor-fan {
+    width: 50px;
+    height: 8px;
+    background: #555;
+    border-radius: 4px;
+    transition: transform 0.1s linear;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.motor-axle.spinning .motor-fan {
+    animation: spin 0.5s infinite linear;
+}
+
+.motor-axle.spinning-fast .motor-fan {
+    animation: spin 0.1s infinite linear;
+}
+
+/* Rotary Encoder */
+.encoder-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.encoder-knob {
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at center, #444, #222);
+    border: 3px solid #111;
+    border-radius: 50%;
+    cursor: grab;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    transition: transform 0.1s;
+}
+
+.encoder-knob:active {
+    cursor: grabbing;
+}
+
+.knob-marker {
+    width: 4px;
+    height: 12px;
+    background: var(--primary-color);
+    position: absolute;
+    top: 5px;
+    left: 28px;
+    border-radius: 2px;
+    box-shadow: 0 0 5px var(--primary-glow);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.2);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.2);
+}

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArduKit Web Simulator</title>
+    <!-- Modern Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Prism Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Navigation -->
+        <nav class="sidebar glass-panel">
+            <div class="logo">
+                <i class="fa-solid fa-microchip"></i>
+                <h2>ArduKit</h2>
+                <span class="badge">SIM</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="#"><i class="fa-solid fa-code"></i> Editor</a></li>
+                <li><a href="#"><i class="fa-solid fa-book"></i> Documentation</a></li>
+                <li><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Toolbar -->
+            <header class="toolbar glass-panel">
+                <div class="toolbar-left">
+                    <h1>Project: <span>sketch_mar17a</span></h1>
+                </div>
+                <div class="toolbar-right">
+                    <button id="btn-run" class="btn btn-primary">
+                        <i class="fa-solid fa-play"></i> Run Code
+                    </button>
+                    <button id="btn-stop" class="btn btn-danger" disabled>
+                        <i class="fa-solid fa-stop"></i> Stop
+                    </button>
+                </div>
+            </header>
+
+            <div class="workspace">
+                <!-- Code Editor Section -->
+                <section class="editor-section glass-panel">
+                    <div class="section-header">
+                        <h3><i class="fa-solid fa-file-code"></i> C++ Script</h3>
+                    </div>
+                    <div class="editor-wrapper">
+                        <pre id="highlighting" aria-hidden="true"><code class="language-clike" id="highlighting-content"></code></pre>
+                        <textarea id="code-editor" spellcheck="false">
+void setup() {
+  // Initialize System LEDs as OUTPUT
+  pinMode(43, OUTPUT);
+  pinMode(44, OUTPUT);
+  pinMode(45, OUTPUT);
+  pinMode(46, OUTPUT);
+  
+  // Set up Serial communication
+  Serial.begin(9600);
+  Serial.println("ArduKit Initialized!");
+}
+
+void loop() {
+  // Cascading LED effect
+  for(int i = 43; i <= 46; i++) {
+    digitalWrite(i, HIGH);
+    delay(200);
+    digitalWrite(i, LOW);
+  }
+}
+</textarea>
+                    </div>
+                    <div class="terminal-section">
+                        <div class="section-header">
+                            <h3><i class="fa-solid fa-terminal"></i> Serial Monitor</h3>
+                        </div>
+                        <div id="serial-output" class="serial-output"></div>
+                    </div>
+                </section>
+
+                <!-- Visual Dashboard Section -->
+                <section class="dashboard-section glass-panel">
+                    <div class="section-header">
+                        <h3><i class="fa-solid fa-gamepad"></i> Hardware Dashboard</h3>
+                        <div class="status-indicator">
+                            <div id="connection-status" class="dot offline"></div>
+                            <span id="status-text">Disconnected</span>
+                        </div>
+                    </div>
+                    
+                    <div class="hardware-grid">
+                        <!-- System LEDs (Pins 43-46) -->
+                        <div class="hardware-module led-module">
+                            <h4>System LEDs</h4>
+                            <div class="led-container">
+                                <div class="led-wrapper">
+                                    <div class="led" id="led-43" data-pin="43"></div>
+                                    <span class="pin-label">D43</span>
+                                </div>
+                                <div class="led-wrapper">
+                                    <div class="led" id="led-44" data-pin="44"></div>
+                                    <span class="pin-label">D44</span>
+                                </div>
+                                <div class="led-wrapper">
+                                    <div class="led" id="led-45" data-pin="45"></div>
+                                    <span class="pin-label">D45</span>
+                                </div>
+                                <div class="led-wrapper">
+                                    <div class="led" id="led-46" data-pin="46"></div>
+                                    <span class="pin-label">D46</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Buttons (Pins 38-41) -->
+                        <div class="hardware-module button-module">
+                            <h4>User Buttons</h4>
+                            <div class="button-container">
+                                <div class="btn-wrapper">
+                                    <button class="hw-btn" id="btn-38" data-pin="38">B1</button>
+                                    <span class="pin-label">D38</span>
+                                </div>
+                                <div class="btn-wrapper">
+                                    <!-- Use mouse events in JS to simulate press/release -->
+                                    <button class="hw-btn" id="btn-39" data-pin="39">B2</button>
+                                    <span class="pin-label">D39</span>
+                                </div>
+                                <div class="btn-wrapper">
+                                    <button class="hw-btn" id="btn-40" data-pin="40">B3</button>
+                                    <span class="pin-label">D40</span>
+                                </div>
+                                <div class="btn-wrapper">
+                                    <button class="hw-btn" id="btn-41" data-pin="41">B4</button>
+                                    <span class="pin-label">D41</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RGB LED (Pins 2,3,4) -->
+                        <div class="hardware-module rgb-module">
+                            <h4>RGB LED</h4>
+                            <div class="rgb-container">
+                                <div class="led rgb-led" id="rgb-main"></div>
+                                <div class="rgb-labels">
+                                    <span>R: D3</span>
+                                    <span>G: D4</span>
+                                    <span>B: D2</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Buzzer (Pin 5) -->
+                        <div class="hardware-module buzzer-module">
+                            <h4>Buzzer</h4>
+                            <div class="buzzer-container">
+                                <div class="buzzer-icon" id="buzzer-main">
+                                    <i class="fa-solid fa-volume-high"></i>
+                                </div>
+                                <span class="pin-label">D5</span>
+                            </div>
+                        </div>
+
+                        <!-- 16x2 Character LCD -->
+                        <div class="hardware-module lcd-module">
+                            <h4>Character LCD (16x2)</h4>
+                            <div class="lcd-container">
+                                <div class="lcd-screen" id="lcd-display">
+                                    <div class="lcd-row" id="lcd-row-0">                </div>
+                                    <div class="lcd-row" id="lcd-row-1">                </div>
+                                </div>
+                                <div class="pin-labels">
+                                    <span class="pin-label">RS:36</span>
+                                    <span class="pin-label">E:37</span>
+                                    <span class="pin-label">D4-7:26-29</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4-Digit 7-Segment Display -->
+                        <div class="hardware-module segment-module">
+                            <h4>7-Segment Display</h4>
+                            <div class="segment-container">
+                                <div class="digit" id="digit-1">
+                                    <div class="seg seg-a"></div><div class="seg seg-b"></div><div class="seg seg-c"></div><div class="seg seg-d"></div><div class="seg seg-e"></div><div class="seg seg-f"></div><div class="seg seg-g"></div><div class="seg seg-dp"></div>
+                                </div>
+                                <div class="digit" id="digit-2">
+                                    <div class="seg seg-a"></div><div class="seg seg-b"></div><div class="seg seg-c"></div><div class="seg seg-d"></div><div class="seg seg-e"></div><div class="seg seg-f"></div><div class="seg seg-g"></div><div class="seg seg-dp"></div>
+                                </div>
+                                <div class="digit" id="digit-3">
+                                    <div class="seg seg-a"></div><div class="seg seg-b"></div><div class="seg seg-c"></div><div class="seg seg-d"></div><div class="seg seg-e"></div><div class="seg seg-f"></div><div class="seg seg-g"></div><div class="seg seg-dp"></div>
+                                </div>
+                                <div class="digit" id="digit-4">
+                                    <div class="seg seg-a"></div><div class="seg seg-b"></div><div class="seg seg-c"></div><div class="seg seg-d"></div><div class="seg seg-e"></div><div class="seg seg-f"></div><div class="seg seg-g"></div><div class="seg seg-dp"></div>
+                                </div>
+                            </div>
+                            <div class="pin-labels">
+                                <span class="pin-label">Segs: 22-29</span>
+                                <span class="pin-label">Digs: 33-36</span>
+                            </div>
+                        </div>
+
+                        <!-- Analog Sensors Sliders -->
+                        <div class="hardware-module sensors-module">
+                            <h4>Analog Sensors</h4>
+                            <div class="sensor-controls">
+                                <div class="sensor-control">
+                                    <label>Potentiometer (A8)</label>
+                                    <input type="range" id="sensor-a8" min="0" max="1023" value="512">
+                                    <span id="label-a8">512</span>
+                                </div>
+                                <div class="sensor-control">
+                                    <label>LDR Light (A11)</label>
+                                    <input type="range" id="sensor-a11" min="0" max="1023" value="800">
+                                    <span id="label-a11">800</span>
+                                </div>
+                                <div class="sensor-control">
+                                    <label>LM35 Temp (A4)</label>
+                                    <input type="range" id="sensor-a4" min="0" max="1023" value="250">
+                                    <span id="label-a4">25°C</span>
+                                </div>
+                                <div class="sensor-control">
+                                    <label>DS18B20 (D30)</label>
+                                    <input type="range" id="sensor-d30" min="-55" max="125" value="25">
+                                    <span id="label-d30">25°C</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Relay (Pin 6) -->
+                        <div class="hardware-module relay-module">
+                            <h4>Relay</h4>
+                            <div class="relay-container">
+                                <div class="relay-box" id="relay-indicator">
+                                    <div class="relay-switch"></div>
+                                    <span class="relay-label">CLICK</span>
+                                </div>
+                                <span class="pin-label">D6</span>
+                            </div>
+                        </div>
+
+                        <!-- DC Motor (Pins 7, 8) -->
+                        <div class="hardware-module motor-module">
+                            <h4>DC Motor 1</h4>
+                            <div class="motor-container">
+                                <div class="motor-axle" id="motor-spinner">
+                                    <div class="motor-fan"></div>
+                                </div>
+                                <div class="pin-labels">
+                                    <span class="pin-label">1A:D7</span>
+                                    <span class="pin-label">1B:D8</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rotary Encoder (Pins 48, 49) -->
+                        <div class="hardware-module encoder-module">
+                            <h4>Rotary Encoder</h4>
+                            <div class="encoder-container">
+                                <div class="encoder-knob" id="encoder-knob">
+                                    <div class="knob-marker"></div>
+                                </div>
+                                <div class="pin-labels">
+                                    <span class="pin-label">A:48</span>
+                                    <span class="pin-label">B:49</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Core Architecture -->
+    <script type="module" src="js/core/EventBus.js"></script>
+    <script type="module" src="js/core/VirtualBoard.js"></script>
+    <script type="module" src="js/core/ArduinoRunner.js"></script>
+    
+    <!-- Peripherals -->
+    <script type="module" src="js/peripherals/SystemLEDs.js"></script>
+    <script type="module" src="js/peripherals/UserButtons.js"></script>
+    <script type="module" src="js/peripherals/RGBLED.js"></script>
+    <script type="module" src="js/peripherals/Buzzer.js"></script>
+    <script type="module" src="js/peripherals/SevenSegment.js"></script>
+    <script type="module" src="js/peripherals/AnalogSensors.js"></script>
+    <script type="module" src="js/peripherals/CharacterLCD.js"></script>
+    <script type="module" src="js/peripherals/Relay.js"></script>
+    <script type="module" src="js/peripherals/DCMotor.js"></script>
+    <script type="module" src="js/peripherals/RotaryEncoder.js"></script>
+
+    <!-- Syntax Highlighting library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+
+    <!-- App Entry -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
