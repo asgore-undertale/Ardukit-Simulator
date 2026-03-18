@@ -9,6 +9,7 @@ import { eventBus } from './EventBus.js';
 
 export class ArduinoRunner {
     constructor(board) {
+        console.log("🛠️ ArduKit Transpiler V2.1 Loaded! (String & Type fix)");
         this.board = board;
         this.eventBus = eventBus;
         this.isRunning = false;
@@ -120,13 +121,19 @@ export class ArduinoRunner {
         });
 
         // 3. Array Initializers & Multi-dimensional Arrays
-        const typeList = /\b(?:void|int|long|float|double|byte|uint8_t|uint16_t|uint32_t|boolean|String|char|int16_t|int32_t|uint64_t|DeviceAddress)\b/;
-        const typePrefix = new RegExp(`\\b(?:const\\s+|static\\s+)*${typeList.source}`, '');
+        const typeListCore = '(?:void|int|long|float|double|byte|uint8_t|uint16_t|uint32_t|boolean|bool|String|char|int16_t|int32_t|uint64_t|DeviceAddress)';
+        const fullTypeStr = `\\b(?:(?:const|static|volatile|unsigned|signed|inline)\\s+)*${typeListCore}\\b`;
         
         // Handle: Type name[] = { ... };
-        jsCode = jsCode.replace(new RegExp(`${typePrefix.source}\\s+(\\w+)\\s*(\\[\\d*\\])+\\s*=`, 'g'), 'let $1 =');
+        jsCode = jsCode.replace(new RegExp(`${fullTypeStr}\\s+(\\w+)\\s*(\\[\\d*\\])+\\s*=`, 'g'), (match, p1) => {
+            if (match.includes('const')) return `const ${p1} =`;
+            return `let ${p1} =`;
+        });
         // Handle: Type name[] ;
-        jsCode = jsCode.replace(new RegExp(`${typePrefix.source}\\s+(\\w+)\\s*(\\[\\d*\\])+\\s*;`, 'g'), 'let $1 = [];');
+        jsCode = jsCode.replace(new RegExp(`${fullTypeStr}\\s+(\\w+)\\s*(\\[\\d*\\])+\\s*;`, 'g'), (match, p1) => {
+            if (match.includes('const')) return `const ${p1} = [];`;
+            return `let ${p1} = [];`;
+        });
         
         // Convert { ... } to [ ... ] for initializers
         jsCode = jsCode.replace(/=\s*\{([\s\S]*?)\}/g, (match, content) => {
@@ -146,19 +153,20 @@ export class ArduinoRunner {
         }
 
         // 5. Function Declarations
-        jsCode = jsCode.replace(new RegExp(`^\\s*${typeList.source}\\s+(\\w+)\\s*\\(`, 'gm'), 'async function $1(');
+        jsCode = jsCode.replace(new RegExp(`^\\s*${fullTypeStr}\\s+(\\w+)\\s*\\(`, 'gm'), 'async function $1(');
 
-        // Strip formal parameters
-        jsCode = jsCode.replace(/\(([^)]*)\)/g, (match, params) => {
-            if (params.trim().toLowerCase() === 'void') return '()';
-            const cleaned = params.replace(new RegExp(`${typeList.source}\\s+`, 'g'), '');
-            return `(${cleaned})`;
+        // Strip formal parameters ONLY from async functions
+        jsCode = jsCode.replace(/(async\s+function\s+\w+\s*\()([^)]*)(\))/g, (match, prefix, params, suffix) => {
+            if (params.trim().toLowerCase() === 'void') return prefix + suffix;
+            const cleaned = params.replace(new RegExp(`${fullTypeStr}\\s+(?:&\\s*)?`, 'g'), '');
+            return prefix + cleaned + suffix;
         });
 
         // Handle types (variables)
-        // Match const Type or Type alone
-        jsCode = jsCode.replace(new RegExp(`\\bconst\\s+${typeList.source}\\b`, 'g'), 'const');
-        jsCode = jsCode.replace(new RegExp(`(?<!new\\s+|const\\s+|let\\s+|\\.)\\b${typeList.source}\\b`, 'g'), 'let');
+        jsCode = jsCode.replace(new RegExp(`(?<!new\\s+|const\\s+|let\\s+|\\.)${fullTypeStr}`, 'g'), (match) => {
+            if (match.includes('const')) return 'const';
+            return 'let';
+        });
         
         // Clean up any remaining brackets in declarations (e.g. let ledler[])
         jsCode = jsCode.replace(/\b(let|const)\s+(\w+)\s*(\[\d*\])+/g, '$1 $2');
