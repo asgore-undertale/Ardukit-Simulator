@@ -1,6 +1,6 @@
 import { eventBus } from './core/EventBus.js';
 import { VirtualBoard } from './core/VirtualBoard.js';
-import { ArduinoRunner } from './core/ArduinoRunner.js';
+import { ArduinoRunner } from './core/ArduinoRunner.js?v=2.1';
 
 import { SystemLEDs } from './peripherals/SystemLEDs.js';
 import { UserButtons } from './peripherals/UserButtons.js';
