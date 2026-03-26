@@ -203,8 +203,9 @@ export class ArduinoRunner {
         jsCode = jsCode.replace(/\bINPUT_PULLUP\b/g, '"INPUT_PULLUP"');
 
         // BCD / Integer Division Heuristics (Fixes 7-Segment ghosting without user changes)
-        jsCode = jsCode.replace(/(\w+)\s*=\s*\1\s*\/\s*10\s*;/g, '$1 = Math.floor($1 / 10);');
-        jsCode = jsCode.replace(/(\w+)\s*\/\=\s*10\s*;/g, '$1 = Math.floor($1 / 10);');
+        // Wraps variable divided by powers of 10 (e.g. sayac / 100) in Math.floor
+        jsCode = jsCode.replace(/\b(\w+)\s*\/\s*(10+)\b/g, 'Math.floor($1 / $2)');
+        jsCode = jsCode.replace(/(\w+)\s*\/\=\s*(10+)\s*;/g, '$1 = Math.floor($1 / $2);');
 
         jsCode = jsCode.replace(/\bpinMode\s*\(/g, 'board.pinMode(');
         jsCode = jsCode.replace(/\bdigitalWrite\s*\(/g, 'board.digitalWrite(');
