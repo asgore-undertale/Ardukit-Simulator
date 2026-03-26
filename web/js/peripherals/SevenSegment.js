@@ -10,7 +10,7 @@ import { eventBus } from '../core/EventBus.js';
 export class SevenSegment {
     constructor() {
         this.segmentPins = [22, 23, 24, 25, 26, 27, 28, 29];
-        this.digitPins = [33, 34, 35, 36];
+        this.digitPins = [36, 35, 34, 33];
         this.digitElements = [
             document.getElementById('digit-1'),
             document.getElementById('digit-2'),
