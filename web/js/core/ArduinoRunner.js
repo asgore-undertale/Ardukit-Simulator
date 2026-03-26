@@ -317,6 +317,15 @@ export class ArduinoRunner {
                     const DEC = 10; const HEX = 16; const OCT = 8; const BIN = 2;
                     const __DATE__ = new Date().toDateString();
                     const __TIME__ = new Date().toLocaleTimeString();
+                    
+                    // Standard Math / Utility functions mapping
+                    const floor = Math.floor;
+                    const ceil = Math.ceil;
+                    const round = Math.round;
+                    const abs = Math.abs;
+                    const min = Math.min;
+                    const max = Math.max;
+
 
                     // Define Serial1, Serial2, Serial3 to reuse basic Serial mocks
                     const Serial = {
