@@ -162,6 +162,29 @@ export class ArduinoRunner {
             return prefix + cleaned + suffix;
         });
 
+        // 5b. Await user-defined async function calls
+        // In Arduino, ALL functions are synchronous. delay() blocks everything.
+        // In our transpiled JS, functions are async but calls are NOT awaited,
+        // causing concurrent execution (e.g., loop() spawns many readButtons() at once).
+        // Fix: collect all user-defined function names and prepend 'await' to calls.
+        const userFuncNames = [];
+        const funcNameRegex = /async\s+function\s+(\w+)\s*\(/g;
+        let funcMatch;
+        while ((funcMatch = funcNameRegex.exec(jsCode)) !== null) {
+            const name = funcMatch[1];
+            // Don't add await to setup/loop (they're called by the runner wrapper)
+            if (name !== 'setup' && name !== 'loop') {
+                userFuncNames.push(name);
+            }
+        }
+        // Prepend 'await' to calls of user-defined functions (only bare calls, not declarations)
+        userFuncNames.forEach(fname => {
+            jsCode = jsCode.replace(
+                new RegExp(`(?<!function\\s)(?<!await\\s)\\b${fname}\\s*\\(`, 'g'),
+                `await ${fname}(`
+            );
+        });
+
         // Handle types (variables)
         jsCode = jsCode.replace(new RegExp(`(?<!new\\s+|const\\s+|let\\s+|\\.)${fullTypeStr}`, 'g'), (match) => {
             if (match.includes('const')) return 'const';
@@ -178,6 +201,10 @@ export class ArduinoRunner {
         jsCode = jsCode.replace(/\bOUTPUT\b/g, '"OUTPUT"');
         jsCode = jsCode.replace(/\bINPUT\b/g, '"INPUT"');
         jsCode = jsCode.replace(/\bINPUT_PULLUP\b/g, '"INPUT_PULLUP"');
+
+        // BCD / Integer Division Heuristics (Fixes 7-Segment ghosting without user changes)
+        jsCode = jsCode.replace(/(\w+)\s*=\s*\1\s*\/\s*10\s*;/g, '$1 = Math.floor($1 / 10);');
+        jsCode = jsCode.replace(/(\w+)\s*\/\=\s*10\s*;/g, '$1 = Math.floor($1 / 10);');
 
         jsCode = jsCode.replace(/\bpinMode\s*\(/g, 'board.pinMode(');
         jsCode = jsCode.replace(/\bdigitalWrite\s*\(/g, 'board.digitalWrite(');
