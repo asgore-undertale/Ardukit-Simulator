@@ -1,4 +1,4 @@
-import { ArduinoRunner } from './web/js/core/ArduinoRunner.js';
+import { ArduinoRunner } from '../web/js/core/ArduinoRunner.js';
 
 const code = `
 // LED pins
@@ -118,7 +118,7 @@ try {
   const result = runner.transpile(code);
   console.log("SUCCESS:");
   console.log(result);
-  
+
   // Try parsing to catch unexpected let
   new Function(result);
 } catch (e) {

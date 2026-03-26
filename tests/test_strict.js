@@ -1,4 +1,4 @@
-import { ArduinoRunner } from './web/js/core/ArduinoRunner.js';
+import { ArduinoRunner } from '../web/js/core/ArduinoRunner.js';
 
 const code = `
 // LED pins
@@ -113,14 +113,14 @@ void toggleAll() {
 }
 `;
 
-const runner = new ArduinoRunner({ reset: () => {} });
-runner.eventBus = { emit: () => {} };
+const runner = new ArduinoRunner({ reset: () => { } });
+runner.eventBus = { emit: () => { } };
 
 (async () => {
-    try {
-        await runner.run(code);
-        console.log("SUCCESS! No error thrown.");
-    } catch (e) {
-        console.error("CAUGHT ERROR DURING run():", e);
-    }
+  try {
+    await runner.run(code);
+    console.log("SUCCESS! No error thrown.");
+  } catch (e) {
+    console.error("CAUGHT ERROR DURING run():", e);
+  }
 })();
